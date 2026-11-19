@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Anak IPA atau IPS? · Tes Minat &amp; Kemampuan (±5 menit)</title>
+<meta name="description" content="Jawab 24 pernyataan soal minat dan kemampuanmu, lalu lihat kamu lebih condong ke IPA atau IPS beserta kekuatan dan jurusan yang paling nyambung.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='11' cy='16' r='9' fill='%230E766E' fill-opacity='0.85'/%3E%3Ccircle cx='21' cy='16' r='9' fill='%23AD5A08' fill-opacity='0.75'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------- tokens ---------- */
+  :root{
+    --canvas:#FAF7F1;
+    --card:#FFFFFF;
+    --card-soft:#F4F0E8;
+    --ink:#211D18;
+    --muted:#6E675E;
+    --faint:#98908733;
+    --line:#E8E1D5;
+    --line-strong:#D5CBB8;
+    --ipa:#0E766E;
+    --ipa-soft:#E4F2EF;
+    --ipa-ink:#0B5751;
+    --ips:#AD5A08;
+    --ips-soft:#F8EDDA;
+    --ips-ink:#7C3F06;
+    --shadow:0 1px 2px rgba(33,29,24,.05), 0 10px 28px -14px rgba(33,29,24,.22);
+    --shadow-s:0 1px 2px rgba(33,29,24,.06);
+    --radius:20px;
+    --radius-s:14px;
+    --font-display:'Fraunces',Georgia,'Times New Roman',serif;
+    --font-body:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --canvas:#15120E;
+      --card:#1F1B16;
+      --card-soft:#26211A;
+      --ink:#F3EEE6;
+      --muted:#B2A99B;
+      --line:#2E2820;
+      --line-strong:#443C30;
+      --ipa:#4CC9BD;
+      --ipa-soft:rgba(76,201,189,.14);
+      --ipa-ink:#8CE0D6;
+      --ips:#E8A24A;
+      --ips-soft:rgba(232,162,74,.15);
+      --ips-ink:#F2BC79;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.55);
+      --shadow-s:0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+
+  /* ---------- base ---------- */
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    font-family:var(--font-body);
+    background:var(--canvas);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.12;margin:0;letter-spacing:-.01em;text-wrap:balance}
+  p{margin:0;text-wrap:pretty}
+  button{font:inherit;color:inherit;cursor:pointer}
+  :focus{outline:none}
+  :focus-visible{outline:2.5px solid var(--ink);outline-offset:2px;border-radius:8px}
+  ::selection{background:var(--ipa-soft)}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  .eyebrow{
+    font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);display:flex;align-items:center;gap:8px;margin:0 0 14px;
+  }
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--line-strong);border-radius:2px}
+  .kw.ipa{color:var(--ipa)}
+  .kw.ips{color:var(--ips)}
+  .muted{color:var(--muted)}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* ---------- buttons & chips ---------- */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    min-height:50px;padding:13px 26px;border-radius:999px;border:1px solid transparent;
+    font-weight:700;font-size:15.5px;text-decoration:none;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn-primary{background:var(--ink);color:var(--canvas);box-shadow:var(--shadow-s)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--ink)}
+  .btn-ghost:hover{background:var(--card)}
+  .btn-quiet{background:transparent;border:none;padding:12px 14px;color:var(--muted);font-weight:600}
+  .btn-quiet:hover{color:var(--ink)}
+  .btn svg{flex:none}
+
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;
+    font-size:13.5px;font-weight:600;background:var(--card);border:1px solid var(--line);color:var(--muted);
+  }
+  .chip.ipa{background:var(--ipa-soft);border-color:transparent;color:var(--ipa-ink)}
+  .chip.ips{background:var(--ips-soft);border-color:transparent;color:var(--ips-ink)}
+
+  /* ---------- header ---------- */
+  header.site{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:15px;letter-spacing:-.01em}
+  .brand .mark{width:30px;height:30px;flex:none}
+  .brand span small{display:block;font-weight:500;font-size:11.5px;color:var(--muted);letter-spacing:.02em}
+  .header-note{font-size:12.5px;color:var(--muted)}
+
+  /* ---------- views ---------- */
+  .view[hidden]{display:none!important}
+  .view{animation:masuk .35s cubic-bezier(.22,.8,.3,1) both}
+  @keyframes masuk{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ---------- intro ---------- */
+  .hero{display:grid;grid-template-columns:1fr;gap:38px;padding:26px 0 20px;align-items:center}
+  @media (min-width:920px){
+    .hero{grid-template-columns:1.05fr .95fr;gap:56px;padding:44px 0 30px}
+  }
+  .hero h1{font-size:clamp(2.1rem,5.4vw,3.5rem);margin:0 0 18px}
+  .hero .lead{font-size:16.5px;color:var(--muted);max-width:56ch;margin-bottom:26px}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:14px}
+  .privacy{font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:flex-start;max-width:44ch}
+  .privacy svg{margin-top:3px;flex:none}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .name-field{margin:0 0 18px;max-width:320px}
+  .name-field label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:7px}
+  .name-field input{
+    width:100%;min-height:48px;padding:12px 16px;border-radius:14px;border:1px solid var(--line-strong);
+    background:var(--card);color:var(--ink);font:inherit;font-size:15px;
+  }
+  .name-field input::placeholder{color:var(--muted);opacity:.75}
+  .resume{margin-top:18px;display:none;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border:1px dashed var(--line-strong);border-radius:var(--radius-s);font-size:14px}
+  .resume.on{display:flex}
+  .resume b{font-weight:700}
+
+  /* preview card */
+  .preview{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 26px 22px;box-shadow:var(--shadow);
+  }
+  .preview .cap{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+  .preview .cap .dot-live{width:7px;height:7px;border-radius:50%;background:var(--ipa);display:inline-block;margin-right:6px;animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+  .preview h3{font-size:19px;margin:14px 0 6px}
+  .mini-bars{display:grid;gap:11px;margin-top:20px}
+  .mini-bar .lbl{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;color:var(--muted)}
+  .mini-bar .lbl b{color:var(--ink);font-weight:600}
+  .track{height:8px;border-radius:999px;background:var(--card-soft);overflow:hidden;border:1px solid var(--line)}
+  .track .fill{height:100%;border-radius:999px}
+
+  /* ---------- spectrum (duality bar) ---------- */
+  .spectrum{width:100%}
+  .spec-labels{display:flex;justify-content:space-between;gap:10px;margin-bottom:9px;font-size:13px;font-weight:600}
+  .tag{display:inline-flex;align-items:baseline;gap:6px}
+  .tag b{font-size:17px;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .tag.ipa{color:var(--ipa-ink)}
+  .tag.ips{color:var(--ips-ink)}
+  .spec-track{
+    position:relative;height:16px;border-radius:999px;overflow:hidden;display:flex;
+    background:var(--card-soft);border:1px solid var(--line);
+  }
+  .spec-track .seg{height:100%}
+  .seg.ipa{background:var(--ipa)}
+  .seg.ips{background:var(--ips)}
+  .spec-mid{
+    position:absolute;top:-4px;bottom:-4px;left:50%;width:0;border-left:1.5px dashed var(--card);
+    opacity:.9;pointer-events:none;
+  }
+  .spec-ends{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--muted)}
+
+  /* ---------- quiz ---------- */
+  .quiz-shell{max-width:660px;margin:26px auto 60px}
+  .quiz-top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap}
+  .progress{height:8px;border-radius:999px;background:var(--card-soft);border:1px solid var(--line);overflow:hidden;margin-bottom:22px}
+  .progress .fill{height:100%;background:var(--ink);border-radius:999px;transition:width .3s cubic-bezier(.22,.8,.3,1)}
+  .qcard{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:30px 30px 26px;box-shadow:var(--shadow);animation:masuk .3s cubic-bezier(.22,.8,.3,1) both;
+  }
+  @media (max-width:480px){.qcard{padding:24px 20px 22px}}
+  .qmeta{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+  .qmeta .sec{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .qmeta .step{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .qtext{font-size:clamp(1.25rem,3.4vw,1.6rem);line-height:1.28;margin-bottom:24px}
+  .opts{display:grid;gap:10px}
+  .opt{
+    display:flex;align-items:center;gap:13px;width:100%;text-align:left;
+    min-height:52px;padding:12px 16px;border-radius:14px;
+    border:1px solid var(--line);background:var(--card);font-size:15.5px;font-weight:500;
+    transition:border-color .13s ease, background .13s ease, transform .13s ease;
+  }
+  .opt:hover{border-color:var(--line-strong);background:var(--card-soft)}
+  .opt .dot{
+    width:21px;height:21px;flex:none;border-radius:50%;border:2px solid var(--line-strong);
+    transition:border-color .13s ease, background .13s ease, box-shadow .13s ease;
+  }
+  .opt .k{margin-left:auto;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 7px;display:none}
+  @media (hover:hover) and (pointer:fine){.opt .k{display:inline-block}}
+  .opt[aria-checked="true"]{border-color:var(--ink);background:var(--card-soft)}
+  .opt[aria-checked="true"] .dot{border-color:var(--ink);background:var(--ink);box-shadow:inset 0 0 0 4.5px var(--card)}
+  .opt.press{transform:scale(.985)}
+  .quiz-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;flex-wrap:wrap}
+  .kbd-hint{font-size:12.5px;color:var(--muted)}
+  .kbd-hint kbd{
+    font:inherit;font-size:11.5px;border:1px solid var(--line-strong);border-bottom-width:2px;
+    border-radius:5px;padding:1px 6px;background:var(--card);color:var(--ink);
+  }
+  @media (max-width:640px){.kbd-hint{display:none}}
+
+  /* interlude */
+  .interlude{text-align:center;padding:54px 24px}
+  .interlude .big{font-size:44px;font-family:var(--font-display);margin-bottom:6px}
+  .interlude h2{font-size:clamp(1.5rem,4vw,2rem);margin-bottom:12px}
+  .interlude p{color:var(--muted);max-width:46ch;margin:0 auto 26px;font-size:15.5px}
+
+  /* ---------- result ---------- */
+  .result-shell{max-width:860px;margin:20px auto 70px}
+  .verdict{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:34px 34px 30px;box-shadow:var(--shadow);margin-bottom:26px;
+  }
+  @media (max-width:520px){.verdict{padding:26px 20px 24px}}
+  .verdict h1{font-size:clamp(1.9rem,5vw,2.9rem);margin:0 0 10px}
+  .verdict .sub{color:var(--muted);font-size:16px;max-width:58ch;margin-bottom:26px}
+  .actions-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:28px 30px;box-shadow:var(--shadow-s);margin-bottom:26px;
+  }
+  @media (max-width:520px){.panel{padding:22px 20px}}
+  .panel > h2{font-size:20px;margin:0 0 6px}
+  .panel > .desc{font-size:14px;color:var(--muted);margin-bottom:20px}
+
+  .insights{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+  .insights li{
+    display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5;
+    padding:14px 16px;border-radius:var(--radius-s);background:var(--card-soft);border:1px solid var(--line);
+  }
+  .insights .ic{flex:none;width:20px;height:20px;margin-top:1px}
+
+  .cols{display:grid;grid-template-columns:1fr;gap:30px}
+  @media (min-width:760px){.cols{grid-template-columns:1fr 1fr;gap:44px}}
+  .col-head{display:flex;align-items:center;gap:9px;margin-bottom:16px}
+  .col-head .swatch{width:12px;height:12px;border-radius:4px}
+  .col-head .swatch.ipa{background:var(--ipa)}
+  .col-head .swatch.ips{background:var(--ips)}
+  .col-head h3{font-size:15px;font-family:var(--font-body);font-weight:700;letter-spacing:.02em}
+  .dim{margin-bottom:16px}
+  .dim .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
+  .dim .nm{font-size:14.5px;font-weight:600}
+  .dim .vl{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .note{font-size:12.5px;color:var(--muted);margin-top:2px}
+
+  .chips{display:flex;flex-wrap:wrap;gap:9px}
+  .cross{margin-top:18px;font-size:13.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:16px}
+
+  .steps{margin:0;padding:0;list-style:none;counter-reset:st;display:grid;gap:14px}
+  .steps li{display:flex;gap:14px;align-items:flex-start;font-size:15px}
+  .steps li::before{
+    counter-increment:st;content:counter(st);
+    flex:none;width:26px;height:26px;border-radius:50%;background:var(--card-soft);border:1px solid var(--line-strong);
+    display:grid;place-items:center;font-size:13px;font-weight:700;margin-top:1px;
+  }
+
+  .disclaimer{font-size:12.5px;color:var(--muted);text-align:center;padding:0 10px 40px;max-width:640px;margin:0 auto}
+  footer.site{border-top:1px solid var(--line);margin-top:20px;padding:22px 0 34px;font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+  .toast{
+    position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);
+    background:var(--ink);color:var(--canvas);padding:11px 20px;border-radius:999px;font-size:14px;font-weight:600;
+    opacity:0;pointer-events:none;transition:opacity .22s ease, transform .22s ease;z-index:40;max-width:90vw;text-align:center;
+  }
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="site wrap">
+  <div class="brand">
+    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="11" cy="16" r="9" fill="var(--ipa)" fill-opacity=".85"/>
+      <circle cx="21" cy="16" r="9" fill="var(--ips)" fill-opacity=".75"/>
+    </svg>
+    <span>IPA atau IPS?<small>Tes minat &amp; kemampuan</small></span>
+  </div>
+  <div class="header-note">±5 menit · gratis · tanpa akun</div>
+</header>
+
+<main class="wrap">
+
+  <!-- =============== INTRO =============== -->
+  <section class="view" id="view-intro">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">24 pernyataan · 6 dimensi · hasil langsung</p>
+        <h1>Sebenarnya kamu anak <span class="kw ipa">IPA</span> atau <span class="kw ips">IPS</span>?</h1>
+        <p class="lead">
+          Isi dua bagian singkat soal <b>minat</b> dan <b>kemampuanmu</b>. Di akhir, kamu bakal lihat
+          posisimu di antara dua dunia itu, dimensi mana yang paling menonjol, dan jurusan kuliah
+          yang paling nyambung.
+        </p>
+
+        <div class="name-field">
+          <label for="inp-nama">Nama kamu (opsional)</label>
+          <input id="inp-nama" type="text" maxlength="30" autocomplete="name" placeholder="cth: Noval">
+        </div>
+
+        <div class="cta-row">
+          <button class="btn btn-primary" id="btn-mulai">
+            Mulai tes
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+        <p class="privacy">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Semua jawaban diproses di perangkatmu sendiri dan nggak dikirim ke mana pun.
+        </p>
+
+        <div class="stats">
+          <span class="chip">24 pertanyaan</span>
+          <span class="chip">6 dimensi</span>
+          <span class="chip">±5 menit</span>
+          <span class="chip">hasil + rekomendasi jurusan</span>
+        </div>
+
+        <div class="resume" id="resume-box">
+          <span>Kamu punya tes yang belum selesai (<b id="resume-count">0/24</b> terjawab).</span>
+          <button class="btn btn-ghost" id="btn-lanjut" style="min-height:42px;padding:8px 18px;font-size:14px">Lanjutkan</button>
+        </div>
+      </div>
+
+      <aside class="preview" aria-label="Contoh halaman hasil">
+        <div class="cap"><span><span class="dot-live"></span>Contoh halaman hasil</span><span>IPA ⇄ IPS</span></div>
+        <div class="spectrum" role="img" aria-label="Contoh: IPA 62 persen, IPS 38 persen">
+          <div class="spec-labels">
+            <span class="tag ipa">IPA <b>62%</b></span>
+            <span class="tag ips">IPS <b>38%</b></span>
+          </div>
+          <div class="spec-track"><span class="seg ipa" style="width:62%"></span><span class="seg ips" style="width:38%"></span><span class="spec-mid"></span></div>
+          <div class="spec-ends"><span>sains &amp; angka</span><span>sosial &amp; cerita</span></div>
+        </div>
+        <h3>Kamu lebih ke <span class="kw ipa">IPA</span></h3>
+        <p class="muted" style="font-size:14px">Kekuatan paling menonjol: Matematika &amp; Logika dan Sains &amp; Eksperimen.</p>
+        <div class="mini-bars">
+          <div class="mini-bar">
+            <div class="lbl"><b>Matematika &amp; Logika</b><span class="num">4,6/5</span></div>
+            <div class="track"><div class="fill" style="width:90%;background:var(--ipa)"></div></div>
+          </div>
+          <div class="mini-bar">
+            <div class="lbl"><b>Sains &amp; Eksperimen</b><span class="num">4,2/5</span></div>
+            <div class="track"><div class="fill" style="width:80%;background:var(--ipa)"></div></div>
+          </div>
+          <div class="mini-bar">
+            <div class="lbl"><b>Ekonomi &amp; Bisnis</b><span class="num">3,4/5</span></div>
+            <div class="track"><div class="fill" style="width:60%;background:var(--ips)"></div></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- =============== QUIZ =============== -->
+  <section class="view" id="view-quiz" hidden>
+    <div class="quiz-shell">
+      <div class="quiz-top">
+        <span class="eyebrow" style="margin:0" id="quiz-section">Bagian 1 dari 2 · Minat</span>
+        <span class="muted num" style="font-size:13.5px" id="quiz-progress-text">1 / 24</span>
+      </div>
+      <div class="progress" role="progressbar" aria-label="Progres tes" aria-valuemin="0" aria-valuemax="24" aria-valuenow="0" id="progress-bar"><div class="fill" id="progress-fill" style="width:0%"></div></div>
+
+      <div class="qcard" id="qcard">
+        <div class="qmeta">
+          <span class="sec" id="q-dim-label">Pertanyaan 1</span>
+          <span class="step" id="q-counter">1 dari 24</span>
+        </div>
+        <h2 class="qtext" id="q-text" tabindex="-1">…</h2>
+        <div class="opts" role="radiogroup" aria-label="Jawaban" id="opts"></div>
+      </div>
+
+      <div class="quiz-foot">
+        <button class="btn-quiet" id="btn-back">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+          Kembali
+        </button>
+        <span class="kbd-hint">Tekan <kbd>1</kbd>–<kbd>5</kbd> untuk menjawab · <kbd>Backspace</kbd> kembali</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== INTERLUDE =============== -->
+  <section class="view" id="view-interlude" hidden>
+    <div class="quiz-shell">
+      <div class="qcard interlude">
+        <div class="big" aria-hidden="true">Ⅰ → Ⅱ</div>
+        <h2>Bagian 1 selesai. Sekarang bagian <span class="kw ips">kemampuan</span>.</h2>
+        <p>Jawab sejujur mungkin. Bayangkan <b>nilai dan pengalamanmu di sekolah</b>, bukan cita-cita atau apa kata orang.</p>
+        <button class="btn btn-primary" id="btn-lanjut2">Lanjut ke bagian 2</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== RESULT =============== -->
+  <section class="view" id="view-result" hidden>
+    <div class="result-shell">
+      <div class="verdict">
+        <p class="eyebrow" id="result-eyebrow">Hasil tes</p>
+        <h1 id="result-title">…</h1>
+        <p class="sub" id="result-sub">…</p>
+
+        <div class="spectrum" id="result-spectrum" role="img">
+          <div class="spec-labels">
+            <span class="tag ipa">IPA <b id="pct-ipa">–%</b></span>
+            <span class="tag ips">IPS <b id="pct-ips">–%</b></span>
+          </div>
+          <div class="spec-track"><span class="seg ipa" id="seg-ipa" style="width:50%"></span><span class="seg ips" id="seg-ips" style="width:50%"></span><span class="spec-mid"></span></div>
+          <div class="spec-ends"><span>sains &amp; angka</span><span>sosial &amp; cerita</span></div>
+        </div>
+
+        <div class="actions-row">
+          <button class="btn btn-primary" id="btn-ulang">Ulangi tes</button>
+          <button class="btn btn-ghost" id="btn-salin">Salin ringkasan hasil</button>
+          <button class="btn btn-ghost" id="btn-bagi" hidden>Bagikan</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Yang paling menonjol dari jawabanmu</h2>
+        <p class="desc">Dibaca dari 24 jawabanmu, dihitung per dimensi.</p>
+        <ul class="insights" id="insight-list"></ul>
+      </div>
+
+      <div class="panel">
+        <h2>Kekuatan per dimensi</h2>
+        <p class="desc">Skala 1–5. Angka di atas 3 berarti dimensi itu kamu jawab cenderung “suka / bisa”.</p>
+        <div class="cols">
+          <div>
+            <div class="col-head"><span class="swatch ipa"></span><h3>SISI IPA</h3></div>
+            <div id="bars-ipa"></div>
+          </div>
+          <div>
+            <div class="col-head"><span class="swatch ips"></span><h3>SISI IPS</h3></div>
+            <div id="bars-ips"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 id="jurusan-title">Jurusan yang paling nyambung</h2>
+        <p class="desc" id="jurusan-desc">Nggak harus ikut, tapi ini titik awal yang masuk akal buat kamu cari tahu lebih lanjut.</p>
+        <div class="chips" id="jurusan-chips"></div>
+        <p class="cross" id="jurusan-cross" hidden></p>
+      </div>
+
+      <div class="panel">
+        <h2>Langkah selanjutnya</h2>
+        <p class="desc">Hasil tes cuma peta awal. Tiga hal ini bikin petanya lebih akurat.</p>
+        <ol class="steps">
+          <li>Bandingkan hasilnya dengan penilaian orang yang sering melihatmu belajar: guru BK, wali kelas, atau orang tua.</li>
+          <li>Uji dengan pengalaman kecil: ikut satu kegiatan praktik (olimpiade, lomba, organisasi, kursus, proyek) di bidang yang menurut hasil ini cocok buatmu.</li>
+          <li>Ulangi tesnya beberapa bulan lagi. Minat dan kemampuan itu berkembang, apalagi setelah ketemu pengalaman baru.</li>
+        </ol>
+      </div>
+
+      <p class="disclaimer">
+        Tes ini alat bantu refleksi, bukan tes psikologi resmi dan bukan penentu masa depan.
+        Untuk keputusan penting seperti pilihan mapel atau jurusan, diskusikan dengan guru BK, guru, orang tua, atau konselor.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site wrap">
+  <span>IPA ⇄ IPS · tes minat &amp; kemampuan</span>
+  <span>Jawabanmu tersimpan hanya di browser ini.</span>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- data ---------------- */
+  var PERTANYAAN = [
+    // Bagian 1 · Minat
+    {b:"minat", k:"mtk", t:"Aku senang main angka: menghitung, menebak pola, dan memecahkan soal matematika."},
+    {b:"minat", k:"eko", t:"Aku penasaran gimana bisnis bisa untung dan gimana uang sebaiknya dikelola."},
+    {b:"minat", k:"sai", t:"Aku suka mencoba percobaan dan penasaran kenapa suatu hal bisa terjadi (fisika/kimia)."},
+    {b:"minat", k:"sos", t:"Aku suka berdiskusi dan berdebat soal isu sosial yang lagi jadi pembicaraan."},
+    {b:"minat", k:"bio", t:"Aku tertarik belajar tentang tubuh manusia, makhluk hidup, dan kesehatan."},
+    {b:"minat", k:"gsb", t:"Aku suka membaca cerita sejarah, budaya, dan kehidupan orang di daerah lain."},
+    {b:"minat", k:"mtk", t:"Menghafal rumus dan memakai logika untuk memecahkan masalah itu menyenangkan buatku."},
+    {b:"minat", k:"eko", t:"Aku suka mengikuti berita tentang harga barang, ekonomi, atau dunia usaha."},
+    {b:"minat", k:"sai", t:"Aku penasaran cara kerja alat, mesin, dan teknologi di sekitarku."},
+    {b:"minat", k:"sos", t:"Aku suka ikut organisasi dan mengurus kegiatan bareng banyak orang."},
+    {b:"minat", k:"bio", t:"Aku penasaran soal gizi, penyakit, dan cara menolong orang yang sedang sakit."},
+    {b:"minat", k:"gsb", t:"Aku suka melihat peta dan membandingkan keadaan satu daerah dengan daerah lain."},
+    // Bagian 2 · Kemampuan
+    {b:"kemampuan", k:"mtk", t:"Aku cepat paham pelajaran matematika di sekolah."},
+    {b:"kemampuan", k:"eko", t:"Aku bisa memahami bacaan soal untung-rugi, harga, dan pengelolaan uang."},
+    {b:"kemampuan", k:"sai", t:"Aku cepat paham pelajaran fisika dan kimia."},
+    {b:"kemampuan", k:"sos", t:"Aku pandai menyampaikan pendapatku di depan orang lain."},
+    {b:"kemampuan", k:"bio", t:"Aku cepat paham materi biologi dan istilah-istilahnya."},
+    {b:"kemampuan", k:"gsb", t:"Aku kuat menghafal dan memahami bacaan panjang (sejarah, geografi, budaya)."},
+    {b:"kemampuan", k:"mtk", t:"Aku sanggup mengerjakan soal hitungan yang rumit tanpa cepat menyerah."},
+    {b:"kemampuan", k:"eko", t:"Kalau ada masalah soal uang atau usaha, aku cepat memahami penyebabnya."},
+    {b:"kemampuan", k:"sai", t:"Aku bisa melakukan praktikum dan memahami hasil percobaan."},
+    {b:"kemampuan", k:"sos", t:"Aku mudah memahami perasaan dan sudut pandang orang lain."},
+    {b:"kemampuan", k:"bio", t:"Nilaiku di pelajaran IPA (biologi) biasanya bagus."},
+    {b:"kemampuan", k:"gsb", t:"Aku bisa menjelaskan kondisi suatu tempat dan mengaitkannya dengan hidup orang di sana."}
+  ];
+
+  var DIMENSI = {
+    mtk:{nama:"Matematika & Logika", sisi:"ipa", ket:"nyaman dengan angka, pola, dan masalah yang dipecah bertahap."},
+    sai:{nama:"Sains & Eksperimen", sisi:"ipa", ket:"penasaran cara benda bekerja dan suka mencoba sendiri."},
+    bio:{nama:"Biologi & Kesehatan", sisi:"ipa", ket:"tertarik pada makhluk hidup, tubuh manusia, dan kesehatan."},
+    eko:{nama:"Ekonomi & Bisnis", sisi:"ips", ket:"tertarik pada uang, usaha, dan cara sistem ekonomi jalan."},
+    sos:{nama:"Sosial & Komunikasi", sisi:"ips", ket:"kuat di ngobrol, memahami orang lain, dan kerja bareng."},
+    gsb:{nama:"Geografi, Sejarah & Budaya", sisi:"ips", ket:"suka peta, peristiwa masa lalu, dan cerita budaya."}
+  };
+
+  var PILIHAN = [
+    {v:1, label:"Sangat tidak setuju"},
+    {v:2, label:"Tidak setuju"},
+    {v:3, label:"Netral / ragu-ragu"},
+    {v:4, label:"Setuju"},
+    {v:5, label:"Sangat setuju"}
+  ];
+
+  var TIER = {
+    "ipa+":{judul:'Kamu lebih ke <span class="kw ipa">IPA</span>', sub:"Jawabanmu miring jelas ke sisi sains: minat dan kemampuanmu nggak setengah-setengah.", sisi:"ipa"},
+    "ipa-":{judul:'Kamu lebih ke <span class="kw ipa">IPA</span>', sub:"Ada kemiringan ke sisi sains, walau bidang sosial juga masih terbuka buatmu.", sisi:"ipa"},
+    "seimbang":{judul:'Kamu di tengah: <span class="kw">seimbang</span>', sub:"Kamu nyaman di dua sisi. Ini bukan kekurangan: banyak jurusan bagus justru butuh kombinasi ini.", sisi:"tengah"},
+    "ips-":{judul:'Kamu lebih ke <span class="kw ips">IPS</span>', sub:"Ada kemiringan ke sisi sosial-humaniora, walau bidang sains juga masih terbuka buatmu.", sisi:"ips"},
+    "ips+":{judul:'Kamu lebih ke <span class="kw ips">IPS</span>', sub:"Jawabanmu miring jelas ke sisi sosial-humaniora: minat dan kemampuanmu kuat di sana.", sisi:"ips"}
+  };
+
+  var JURUSAN = {
+    ipa:["Kedokteran & Keperawatan","Farmasi","Teknik Informatika / Ilmu Komputer","Teknik Mesin / Sipil / Elektro","Matematika & Statistika","Fisika / Kimia / Biologi","Gizi & Teknologi Pangan","Arsitektur","Sains Data"],
+    ips:["Akuntansi","Manajemen & Bisnis","Ekonomi","Ilmu Hukum","Psikologi","Ilmu Komunikasi","Hubungan Internasional","Administrasi (Niaga / Fiskal / Negara)","Ilmu Politik & Kriminologi","Sastra & Bahasa","Pariwisata"],
+    lintas:["Akuntansi & analitik data","Psikologi (banyak statistiknya)","Statistika terapan","Bisnis digital / sistem informasi","Arsitektur","Desain komunikasi visual"]
+  };
+  var CONTOH_SISI_LAIN = { ipa:["Statistika terapan","Sains data","Teknologi pangan"], ips:["Manajemen","Ilmu komunikasi","Administrasi fiskal"] };
+
+  var SIMPAN_KEY = "tes-ipa-ips-v1";
+  var TOTAL = PERTANYAAN.length;
+
+  /* ---------------- state ---------------- */
+  var state = { nama:"", jawaban:new Array(TOTAL).fill(null), idx:0, selesai:false };
+
+  /* ---------------- helpers ---------------- */
+  var $ = function(id){ return document.getElementById(id); };
+
+  function bacaSimpanan(){
+    try{
+      var raw = localStorage.getItem(SIMPAN_KEY);
+      if(!raw) return null;
+      var d = JSON.parse(raw);
+      if(!d || !Array.isArray(d.jawaban) || d.jawaban.length !== TOTAL) return null;
+      var ok = d.jawaban.every(function(v){ return v === null || (v >= 1 && v <= 5); });
+      if(!ok) return null;
+      d.nama = typeof d.nama === "string" ? d.nama.slice(0,30) : "";
+      return d;
+    }catch(e){ return null; }
+  }
+  function simpan(){
+    try{
+      localStorage.setItem(SIMPAN_KEY, JSON.stringify({
+        nama:state.nama, jawaban:state.jawaban, selesai:state.selesai, waktu:Date.now()
+      }));
+    }catch(e){}
+  }
+  function bersihkanSimpanan(){ try{ localStorage.removeItem(SIMPAN_KEY); }catch(e){} }
+
+  function jumlahTerjawab(){
+    var n = 0;
+    for(var i=0;i<TOTAL;i++){ if(state.jawaban[i] !== null) n++; }
+    return n;
+  }
+  function firstUnanswered(){
+    for(var i=0;i<TOTAL;i++){ if(state.jawaban[i] === null) return i; }
+    return TOTAL - 1;
+  }
+  function mean(arr){
+    var s = 0, n = 0;
+    for(var i=0;i<arr.length;i++){ if(arr[i] !== null){ s += arr[i]; n++; } }
+    return n ? s/n : 0;
+  }
+  function fmt1(x){ return x.toFixed(1).replace(".", ","); }
+
+  function tampil(view){
+    ["intro","quiz","interlude","result"].forEach(function(v){
+      var el = $("view-" + v);
+      if(el) el.hidden = (v !== view);
+    });
+    window.scrollTo({top:0, behavior:"auto"});
+  }
+
+  var toastTimer = null;
+  function toast(msg){
+    var el = $("toast");
+    el.textContent = msg;
+    el.classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.classList.remove("on"); }, 2400);
+  }
+
+  /* ---------------- intro ---------------- */
+  function refreshIntro(){
+    var t = jumlahTerjawab();
+    var box = $("resume-box");
+    if(t > 0 && t < TOTAL && !state.selesai){
+      $("resume-count").textContent = t + "/" + TOTAL;
+      box.classList.add("on");
+    }else{
+      box.classList.remove("on");
+    }
+  }
+
+  function mulaiTes(dari){
+    state.selesai = false;
+    state.idx = typeof dari === "number" ? dari : 0;
+    state.nama = ($("inp-nama").value || "").trim().slice(0,30);
+    simpan();
+    tampil("quiz");
+    renderQuiz(state.idx);
+  }
+
+  $("btn-mulai").addEventListener("click", function(){ mulaiTes(0); });
+  $("btn-lanjut").addEventListener("click", function(){
+    state.nama = ($("inp-nama").value || "").trim().slice(0,30);
+    state.idx = firstUnanswered();
+    tampil("quiz");
+    renderQuiz(state.idx);
+  });
+  $("inp-nama").addEventListener("input", function(){
+    // simpan nama walau belum mulai supaya nggak hilang saat refresh
+    state.nama = (this.value || "").trim().slice(0,30);
+    if(jumlahTerjawab() > 0) simpan();
+  });
+
+  /* ---------------- quiz ---------------- */
+  var advanceTimer = null;
+
+  function renderQuiz(i){
+    state.idx = i;
+    var p = PERTANYAAN[i];
+    var bagian = p.b === "minat" ? "Bagian 1 dari 2 · Minat" : "Bagian 2 dari 2 · Kemampuan";
+    $("quiz-section").textContent = bagian;
+    $("quiz-progress-text").textContent = (i+1) + " / " + TOTAL;
+    $("q-dim-label").textContent = "Pertanyaan " + (i+1);
+    $("q-counter").textContent = "Bagian " + (p.b === "minat" ? "1" : "2") + " · soal " + ((i % 12) + 1) + " dari 12";
+    $("q-text").textContent = p.t;
+
+    var t = jumlahTerjawab();
+    $("progress-fill").style.width = (t / TOTAL * 100) + "%";
+    var pb = $("progress-bar");
+    pb.setAttribute("aria-valuenow", String(t));
+
+    var kontainer = $("opts");
+    kontainer.innerHTML = "";
+    PILIHAN.forEach(function(o){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "opt";
+      b.setAttribute("role", "radio");
+      b.setAttribute("aria-checked", state.jawaban[i] === o.v ? "true" : "false");
+      b.setAttribute("data-v", String(o.v));
+      b.setAttribute("aria-label", o.label + " (" + o.v + " dari 5)");
+      b.innerHTML = '<span class="dot" aria-hidden="true"></span><span>' + o.label + '</span><span class="k num">' + o.v + '</span>';
+      b.addEventListener("click", function(){ jawab(o.v); });
+      kontainer.appendChild(b);
+    });
+
+    $("btn-back").style.visibility = i === 0 ? "hidden" : "visible";
+
+    // pindahkan fokus ke pertanyaan (bukan tombol) supaya pembaca layar ikut pindah
+    var q = $("q-text");
+    if(document.activeElement && document.activeElement !== document.body){
+      q.focus({preventScroll:true});
+    }
+  }
+
+  function jawab(v){
+    var i = state.idx;
+    state.jawaban[i] = v;
+    simpan();
+
+    var opts = $("opts").querySelectorAll(".opt");
+    for(var j=0;j<opts.length;j++){
+      opts[j].setAttribute("aria-checked", String(Number(opts[j].getAttribute("data-v")) === v));
+    }
+    var pressed = $("opts").querySelector('.opt[data-v="' + v + '"]');
+    if(pressed){
+      pressed.classList.add("press");
+      setTimeout(function(){ pressed.classList.remove("press"); }, 160);
+    }
+
+    var t = jumlahTerjawab();
+    $("progress-fill").style.width = (t / TOTAL * 100) + "%";
+    $("progress-bar").setAttribute("aria-valuenow", String(t));
+    $("quiz-progress-text").textContent = (i+1) + " / " + TOTAL;
+
+    clearTimeout(advanceTimer);
+    var reduksi = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    advanceTimer = setTimeout(function(){ lanjut(); }, reduksi ? 60 : 230);
+  }
+
+  function lanjut(){
+    var i = state.idx;
+    if(i === TOTAL - 1){
+      state.selesai = true;
+      simpan();
+      renderHasil();
+      return;
+    }
+    if(i === 11){
+      tampil("interlude");
+      return;
+    }
+    renderQuiz(i + 1);
+  }
+
+  function kembali(){
+    var i = state.idx;
+    if(i === 0) return;
+    if(i === 12){ renderQuiz(11); return; }  // dari soal pertama bagian 2 balik ke soal 12
+    renderQuiz(i - 1);
+  }
+  $("btn-back").addEventListener("click", kembali);
+  $("btn-lanjut2").addEventListener("click", function(){ renderQuiz(12); });
+
+  document.addEventListener("keydown", function(e){
+    if($("view-quiz").hidden) return;
+    if(e.key >= "1" && e.key <= "5"){
+      e.preventDefault();
+      jawab(Number(e.key));
+    }else if(e.key === "Backspace" || e.key === "ArrowLeft"){
+      e.preventDefault();
+      kembali();
+    }
+  });
+
+  /* ---------------- hasil ---------------- */
+  function hitung(){
+    var perK = { mtk:[], sai:[], bio:[], eko:[], sos:[], gsb:[] };
+    var minatIPA = [], minatIPS = [], kemIPA = [], kemIPS = [];
+
+    PERTANYAAN.forEach(function(p, i){
+      var v = state.jawaban[i];
+      perK[p.k].push(v);
+      var sisi = DIMENSI[p.k].sisi;
+      if(p.b === "minat"){ (sisi === "ipa" ? minatIPA : minatIPS).push(v); }
+      else { (sisi === "ipa" ? kemIPA : kemIPS).push(v); }
+    });
+
+    var skor = {};
+    Object.keys(perK).forEach(function(k){ skor[k] = mean(perK[k]); });
+
+    var skorIPA = (skor.mtk + skor.sai + skor.bio) / 3;
+    var skorIPS = (skor.eko + skor.sos + skor.gsb) / 3;
+    var delta = skorIPA - skorIPS;
+
+    var tier;
+    if(Math.abs(delta) < 0.4) tier = "seimbang";
+    else if(Math.abs(delta) < 0.95) tier = delta > 0 ? "ipa-" : "ips-";
+    else tier = delta > 0 ? "ipa+" : "ips+";
+
+    var jumlah = skorIPA + skorIPS || 1;
+    var ipaShare = Math.round(skorIPA / jumlah * 100);
+    ipaShare = Math.min(97, Math.max(3, ipaShare));
+    var ipsShare = 100 - ipaShare;
+
+    var dMinat = mean(minatIPA) - mean(minatIPS);
+    var dKem = mean(kemIPA) - mean(kemIPS);
+
+    return {
+      skor:skor, skorIPA:skorIPA, skorIPS:skorIPS, delta:delta, tier:tier,
+      ipaShare:ipaShare, ipsShare:ipsShare, dMinat:dMinat, dKem:dKem,
+      rata2:mean(state.jawaban.slice()), netral:state.jawaban.filter(function(v){ return v === 3; }).length
+    };
+  }
+
+  function daftarDimensi(sisi){
+    return Object.keys(DIMENSI)
+      .filter(function(k){ return DIMENSI[k].sisi === sisi; })
+      .sort(function(a,b){ return h.skor[b] - h.skor[a]; });
+  }
+
+  var h = null; // hasil terakhir (dipakai tombol salin/bagi)
+
+  function renderHasil(){
+    h = hitung();
+    var t = TIER[h.tier];
+
+    $("result-eyebrow").textContent = "Hasil tes" + (state.nama ? " · " + state.nama : "") + " · " + new Date().toLocaleDateString("id-ID", {day:"numeric", month:"long", year:"numeric"});
+    $("result-title").innerHTML = t.judul;
+    $("result-sub").textContent = t.sub;
+
+    $("pct-ipa").textContent = h.ipaShare + "%";
+    $("pct-ips").textContent = h.ipsShare + "%";
+    $("seg-ipa").style.width = h.ipaShare + "%";
+    $("seg-ips").style.width = h.ipsShare + "%";
+    $("result-spectrum").setAttribute("aria-label", "IPA " + h.ipaShare + " persen, IPS " + h.ipsShare + " persen");
+
+    // ---- insights ----
+    var urutIPA = daftarDimensi("ipa");
+    var urutIPS = daftarDimensi("ips");
+    var semua = urutIPA.concat(urutIPS).sort(function(a,b){ return h.skor[b] - h.skor[a]; });
+    var top1 = semua[0], top2 = semua[1], bawah = semua[semua.length-1];
+    var ins = [];
+
+    ins.push("Kekuatan paling menonjol: <b>" + DIMENSI[top1].nama + "</b> (" + fmt1(h.skor[top1]) + "/5) dan <b>" + DIMENSI[top2].nama + "</b> (" + fmt1(h.skor[top2]) + "/5).");
+
+    if(h.dMinat >= 0.4 && h.dKem >= 0.4){
+      ins.push("Minat dan kemampuanmu sejalan: dua-duanya condong ke <b>IPA</b>.");
+    }else if(h.dMinat <= -0.4 && h.dKem <= -0.4){
+      ins.push("Minat dan kemampuanmu sejalan: dua-duanya condong ke <b>IPS</b>.");
+    }else if(h.dMinat >= 0.4 && h.dKem <= -0.4){
+      ins.push("Menarik: <b>minatmu condong IPA, tapi kemampuan yang kamu rasakan lebih kuat di IPS</b>. Wajar kok, coba cari bidang yang memakai dua-duanya, atau perkuat dulu dasar hitungannya.");
+    }else if(h.dMinat <= -0.4 && h.dKem >= 0.4){
+      ins.push("Menarik: <b>minatmu condong IPS, tapi kemampuanmu lebih menonjol di IPA</b>. Bisa jadi kamu menikmati cerita sosial sambil tetap kuat di hitungan, banyak jurusan butuh kombinasi itu.");
+    }else{
+      ins.push("Arah minat dan kemampuanmu belum terlalu tajam. Cobain lebih banyak pengalaman dulu sebelum memutuskan.");
+    }
+
+    if(h.netral >= 14){
+      ins.push("Kamu banyak memilih <b>netral</b> (" + h.netral + " dari 24), jadi hasil ini belum terlalu tajam. Kalau mau gambaran yang lebih jelas, ulangi dan pilih yang paling mendekati, walau nggak persis.");
+    }else if(h.skor[bawah] < 2.5){
+      ins.push("Dimensi <b>" + DIMENSI[bawah].nama + "</b> (" + fmt1(h.skor[bawah]) + "/5) masih paling rendah. Bukan masalah, itu cuma berarti bagian ini belum kamu jelajahi, bukan nggak bisa.");
+    }
+
+    var ul = $("insight-list");
+    ul.innerHTML = "";
+    var ikon = '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="var(--ipa)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg>';
+    ins.forEach(function(txt){
+      var li = document.createElement("li");
+      li.innerHTML = ikon + "<span>" + txt + "</span>";
+      ul.appendChild(li);
+    });
+
+    // ---- bars ----
+    function gambarBar(wadah, kunci, warnaCss){
+      var el = $(wadah);
+      el.innerHTML = "";
+      kunci.forEach(function(k){
+        var pct = Math.max(2, (h.skor[k] - 1) / 4 * 100);
+        var div = document.createElement("div");
+        div.className = "dim";
+        div.innerHTML =
+          '<div class="row"><span class="nm">' + DIMENSI[k].nama + '</span><span class="vl num">' + fmt1(h.skor[k]) + '/5</span></div>' +
+          '<div class="track"><div class="fill" style="width:' + pct.toFixed(1) + '%;background:' + warnaCss + '"></div></div>' +
+          '<p class="note">' + DIMENSI[k].ket + '</p>';
+        el.appendChild(div);
+      });
+    }
+    gambarBar("bars-ipa", urutIPA, "var(--ipa)");
+    gambarBar("bars-ips", urutIPS, "var(--ips)");
+
+    // ---- jurusan ----
+    var chips = $("jurusan-chips");
+    chips.innerHTML = "";
+    var sisiUtama, cross;
+    if(h.tier === "seimbang"){
+      $("jurusan-title").textContent = "Jurusan yang main di dua-duanya";
+      $("jurusan-desc").textContent = "Karena posisimu di tengah, bidang lintas IPA-IPS ini sering paling pas. Daftar sisi IPA dan IPS tetap relevan juga.";
+      cross = "Daftar lengkapnya tetap terbuka: sisi IPA (" + JURUSAN.ipa.slice(0,3).join(", ") + ", …) dan sisi IPS (" + JURUSAN.ips.slice(0,3).join(", ") + ", …).";
+      JURUSAN.lintas.forEach(function(j){
+        var s = document.createElement("span");
+        s.className = "chip";
+        s.textContent = j;
+        chips.appendChild(s);
+      });
+    }else{
+      sisiUtama = t.sisi;
+      var lawan = sisiUtama === "ipa" ? "ips" : "ipa";
+      $("jurusan-title").textContent = "Jurusan yang paling nyambung (sisi " + sisiUtama.toUpperCase() + ")";
+      $("jurusan-desc").textContent = "Nggak harus ikut, tapi ini titik awal yang masuk akal buat kamu cari tahu lebih lanjut.";
+      JURUSAN[sisiUtama].forEach(function(j){
+        var s = document.createElement("span");
+        s.className = "chip " + sisiUtama;
+        s.textContent = j;
+        chips.appendChild(s);
+      });
+      cross = "Sisi " + lawan.toUpperCase() + " tetap kuat buatmu: jurusan seperti " + CONTOH_SISI_LAIN[lawan].join(", ") + " masih layak dipertimbangkan.";
+    }
+    var crossEl = $("jurusan-cross");
+    crossEl.textContent = cross;
+    crossEl.hidden = false;
+
+    // ---- bagikan ----
+    if(navigator.share){ $("btn-bagi").hidden = false; }
+
+    tampil("result");
+  }
+
+  /* ---------------- aksi hasil ---------------- */
+  $("btn-ulang").addEventListener("click", function(){
+    bersihkanSimpanan();
+    state = { nama:"", jawaban:new Array(TOTAL).fill(null), idx:0, selesai:false };
+    $("inp-nama").value = "";
+    refreshIntro();
+    tampil("intro");
+  });
+
+  function ringkasanTeks(){
+    var t = TIER[h.tier];
+    var judul = t.judul.replace(/<[^>]+>/g, "");
+    var urutIPA = daftarDimensi("ipa");
+    var urutIPS = daftarDimensi("ips");
+    var semua = urutIPA.concat(urutIPS).sort(function(a,b){ return h.skor[b] - h.skor[a]; });
+
+    var baris = [];
+    if(state.nama) baris.push("Nama: " + state.nama);
+    baris.push("HASIL TES MINAT & KEMAMPUAN (IPA ⇄ IPS)");
+    baris.push("IPA " + h.ipaShare + "% · IPS " + h.ipsShare + "%");
+    baris.push(judul);
+    baris.push("Kekuatan utama: " + semua.slice(0,2).map(function(k){ return DIMENSI[k].nama + " (" + fmt1(h.skor[k]) + "/5)"; }).join(", "));
+    baris.push("Skor per dimensi:");
+    urutIPA.concat(urutIPS).forEach(function(k){
+      baris.push("  - " + DIMENSI[k].nama + ": " + fmt1(h.skor[k]) + "/5");
+    });
+    baris.push("Dicek tanggal " + new Date().toLocaleDateString("id-ID", {day:"numeric", month:"long", year:"numeric"}) + ".");
+    return baris.join("\n");
+  }
+
+  $("btn-salin").addEventListener("click", function(){
+    var teks = ringkasanTeks();
+    function fallback(){
+      var ta = document.createElement("textarea");
+      ta.value = teks;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand("copy"); toast("Ringkasan hasil disalin"); }
+      catch(e){ toast("Gagal menyalin, maaf ya"); }
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(teks).then(function(){ toast("Ringkasan hasil disalin"); }, fallback);
+    }else{
+      fallback();
+    }
+  });
+
+  $("btn-bagi").addEventListener("click", function(){
+    navigator.share({ title:"Hasil tes IPA ⇄ IPS", text:ringkasanTeks() }).catch(function(){});
+  });
+
+  /* ---------------- boot ---------------- */
+  (function boot(){
+    var d = bacaSimpanan();
+    if(d){
+      state.nama = d.nama || "";
+      state.jawaban = d.jawaban;
+      state.selesai = !!d.selesai;
+      $("inp-nama").value = state.nama;
+
+      if(state.selesai && jumlahTerjawab() === TOTAL){
+        renderHasil();
+        return;
+      }
+    }
+    refreshIntro();
+    tampil("intro");
+  })();
+
+})();
+</script>
+</body>
+</html>
