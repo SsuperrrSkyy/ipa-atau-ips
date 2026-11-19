@@ -405,7 +405,10 @@
         <div class="big" aria-hidden="true">Ⅰ → Ⅱ</div>
         <h2>Bagian 1 selesai. Sekarang bagian <span class="kw ips">kemampuan</span>.</h2>
         <p>Jawab sejujur mungkin. Bayangkan <b>nilai dan pengalamanmu di sekolah</b>, bukan cita-cita atau apa kata orang.</p>
-        <button class="btn btn-primary" id="btn-lanjut2">Lanjut ke bagian 2</button>
+        <div class="cta-row" style="justify-content:center;margin-bottom:0">
+          <button class="btn btn-ghost" id="btn-back2">Kembali ke soal sebelumnya</button>
+          <button class="btn btn-primary" id="btn-lanjut2">Lanjut ke bagian 2</button>
+        </div>
       </div>
     </div>
   </section>
@@ -740,7 +743,8 @@
     renderQuiz(i - 1);
   }
   $("btn-back").addEventListener("click", kembali);
-  $("btn-lanjut2").addEventListener("click", function(){ renderQuiz(12); });
+  $("btn-lanjut2").addEventListener("click", function(){ tampil("quiz"); renderQuiz(12); });
+  $("btn-back2").addEventListener("click", function(){ tampil("quiz"); renderQuiz(11); });
 
   document.addEventListener("keydown", function(e){
     if($("view-quiz").hidden) return;
@@ -832,6 +836,10 @@
       ins.push("Menarik: <b>minatmu condong IPA, tapi kemampuan yang kamu rasakan lebih kuat di IPS</b>. Wajar kok, coba cari bidang yang memakai dua-duanya, atau perkuat dulu dasar hitungannya.");
     }else if(h.dMinat <= -0.4 && h.dKem >= 0.4){
       ins.push("Menarik: <b>minatmu condong IPS, tapi kemampuanmu lebih menonjol di IPA</b>. Bisa jadi kamu menikmati cerita sosial sambil tetap kuat di hitungan, banyak jurusan butuh kombinasi itu.");
+    }else if(Math.abs(h.dKem) >= 0.4){
+      ins.push("Kemampuanmu sudah miring ke <b>" + (h.dKem > 0 ? "IPA" : "IPS") + "</b>, sementara minatmu masih netral. Bidang yang kamu jago sering jadi pintu masuk rasa suka: coba dalami satu topik di sana dulu.");
+    }else if(Math.abs(h.dMinat) >= 0.4){
+      ins.push("Minatmu sudah miring ke <b>" + (h.dMinat > 0 ? "IPA" : "IPS") + "</b>, walau kemampuan yang kamu rasakan masih netral. Wajar: minat biasanya jalan dulu, kemampuan nyusul lewat latihan.");
     }else{
       ins.push("Arah minat dan kemampuanmu belum terlalu tajam. Cobain lebih banyak pengalaman dulu sebelum memutuskan.");
     }
